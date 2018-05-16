@@ -142,6 +142,9 @@ class ClassicalResult implements ParsingRuleInterface
             $data['videoLarge'] = false;
         }
 
+        if (!$data) {
+            return null;
+        }
 
         $item = new BaseResult($resultTypes, $data);
         $resultSet->addItem($item);
