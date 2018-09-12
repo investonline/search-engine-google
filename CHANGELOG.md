@@ -1,9 +1,30 @@
 # CHANGELOG
 
 
-## 0.3.1
+## 0.4.2
 
 *2018-xx-xx* NOT RELEASED YET
+
+## 0.4.1
+
+*2018-07-05* 
+
+* Bug fix:
+    * fixed multiple mobile issues on mobile results
+    * fixed parsing for number of results (#100) - thanks @migliori
+    * fixed related searches on desktop  - thanks @gudix
+
+## 0.4.0
+
+*2018-05-29*
+
+* Bug fix:
+    * fixed the captcha exception. The right exception is now returned when a captcha is found
+    * fixed invalid type hinting causing errors with hhvm
+* Google updates:
+    * **bc break** removed support for image captcha as google now uses recaptcha
+* Other:
+    * When an invalid classical result is found, throw an exception instead of returning invalid results causing fatal errors.
 
 ## 0.3.0 
 
