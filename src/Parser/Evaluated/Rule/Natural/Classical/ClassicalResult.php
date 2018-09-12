@@ -7,6 +7,7 @@ namespace Serps\SearchEngine\Google\Parser\Evaluated\Rule\Natural\Classical;
 
 use Serps\Core\Dom\DomElement;
 use Serps\Core\Media\MediaFactory;
+use Serps\SearchEngine\Google\Exception\InvalidDOMException;
 use Serps\SearchEngine\Google\Page\GoogleDom;
 use Serps\Core\Serp\BaseResult;
 use Serps\Core\Serp\IndexedResultSet;
@@ -16,7 +17,7 @@ use Serps\SearchEngine\Google\NaturalResultType;
 class ClassicalResult implements ParsingRuleInterface
 {
 
-    public function match(GoogleDom $dom, \Serps\Core\Dom\DomElement $node)
+    public function match(GoogleDom $dom, DomElement $node)
     {
         if ($node->getAttribute('class') == 'g') {
             if ($dom->cssQuery('.rc', $node)->length == 1) {
@@ -35,12 +36,12 @@ class ClassicalResult implements ParsingRuleInterface
             ->xpathQuery("descendant::h3[@class='r'][1]/a", $node)
             ->item(0);
         if (!$aTag) {
-            return;
+            throw new InvalidDOMException('Cannot parse a classical result.');
         }
 
         $destinationTag = $dom
-            ->cssQuery('div.f>cite', $node)
-            ->item(0);
+            ->cssQuery('div.f cite', $node)
+            ->getNodeAt(0);
 
         $descriptionTag = $dom
             ->xpathQuery("descendant::span[@class='st']", $node)
@@ -49,7 +50,7 @@ class ClassicalResult implements ParsingRuleInterface
         return [
             'title'   => $aTag->nodeValue,
             'url'     => $dom->getUrl()->resolveAsString($aTag->getAttribute('href')),
-            'destination' => $destinationTag ? $destinationTag->nodeValue : null,
+            'destination' => $destinationTag->getNodeValue(),
             // trim needed for mobile results coming with an initial space
             'description' => $descriptionTag ? trim($descriptionTag->nodeValue) : null,
             'isAmp' => function () use ($dom, $node) {
