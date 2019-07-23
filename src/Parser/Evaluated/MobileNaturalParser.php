@@ -60,7 +60,7 @@ class MobileNaturalParser extends AbstractParser
     protected function getParsableItems(GoogleDom $googleDom)
     {
         $xpathObject = $googleDom->getXpath();
-        $xpathElementGroups = "//div[@id = 'ires']/*[@id = 'rso']/*";
+        $xpathElementGroups = "//*[@id = 'rso']/*";
         return $xpathObject->query($xpathElementGroups);
     }
 }
